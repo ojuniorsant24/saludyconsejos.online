@@ -24,40 +24,38 @@ function removeURLParameter(url, parameter) {
     return url;
 }
 
-// Substitua pelo domínio da sua página falsa
-const fakePageDomain = "https://saludyconsejos.online/pv5/"; // Altere aqui
-
-// Substitua pela sua senha
+// Substitua pela senha correta
 const password = "bx"; // Altere aqui
 
-// Captura a slug original para exibição na URL da página falsa
+// Substitua pela URL original para exibição
+const originalURL = "https://saludyconsejos.online/pv7/"; // Altere aqui
+
+// Captura a slug da URL original para mascarar na barra de endereço
 const originalSlug = window.location.pathname;
 
 // Verifica se o usuário já foi redirecionado anteriormente
 if (localStorage.getItem('userRedirected') === 'true') {
-    // Atualiza o histórico do navegador para exibir a slug original
-    window.history.replaceState(null, null, originalSlug);
+    // Atualiza o histórico do navegador para exibir a URL original com a slug correta
+    window.history.replaceState(null, null, originalURL + originalSlug);
 } else if (localStorage.getItem('userAccessed') === 'true') {
     // Remove o parâmetro 'src' da URL sem recarregar a página
     var cleanURL = removeURLParameter(window.location.href, 'src');
-    history.replaceState(null, null, cleanURL);
+    history.replaceState(null, null, originalURL + originalSlug);
 } else {
     // Verifica se a página foi acessada com o parâmetro correto
     if (getURLParameter('src') !== password) {
         // Armazena no localStorage que o usuário foi redirecionado
         localStorage.setItem('userRedirected', 'true');
-        // Atualiza o histórico do navegador para exibir a slug original
-        window.history.replaceState(null, null, originalSlug);
-        // Redireciona o usuário para outra página
-        window.location.href = fakePageDomain;
+        // Atualiza o histórico do navegador para exibir a URL original com a slug correta
+        window.history.replaceState(null, null, originalURL + originalSlug);
+        // Recarrega a página falsa
+        window.location.href = originalURL + originalSlug;
     } else {
         // Armazena no localStorage que o usuário acessou a página corretamente
         localStorage.setItem('userAccessed', 'true');
         // Remove o parâmetro 'src' da URL sem recarregar a página
         var cleanURL = removeURLParameter(window.location.href, 'src');
-        history.replaceState(null, null, cleanURL);
-        // Atualiza o histórico do navegador para exibir a slug original
-        window.history.replaceState(null, null, originalSlug);
+        history.replaceState(null, null, originalURL + originalSlug);
     }
 }
 </script>
