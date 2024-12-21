@@ -26,11 +26,19 @@ function cleanURLParameter(parameter) {
     window.history.replaceState({}, document.title, url.pathname + url.search);
 }
 
+// Função para redirecionar mantendo a slug
+function redirectToFakePageWithSlug() {
+    const originalPath = window.location.pathname; // Obtém o caminho da página original
+    const fakeURL = new URL(redirectFakePage);
+    fakeURL.pathname = originalPath; // Mantém a slug
+    window.location.href = fakeURL.toString(); // Redireciona para a página falsa com a slug original
+}
+
 // Lógica de proteção
 (function protectPage() {
-    // Detecta robôs e redireciona para a página falsa
+    // Detecta robôs e redireciona para a página falsa mantendo a slug
     if (isBot()) {
-        window.location.href = redirectFakePage;
+        redirectToFakePageWithSlug();
         return;
     }
 
@@ -48,8 +56,8 @@ function cleanURLParameter(parameter) {
         return; // Permite o acesso
     }
 
-    // Redireciona para a página falsa caso não passe na validação
-    window.location.href = redirectFakePage;
+    // Redireciona para a página falsa mantendo a slug caso não passe na validação
+    redirectToFakePageWithSlug();
 })();
 </script>
 
