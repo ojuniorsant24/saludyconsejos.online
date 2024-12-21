@@ -29,7 +29,7 @@ if (localStorage.getItem('userRedirected') === 'true') {
  // Redireciona o usuário para outra página (por exemplo, página inicial)
  window.location.href = "https://saludyconsejos.online/pv5/";
 } else if (localStorage.getItem('userAccessed') === 'true') {
- // Remove o parâmetro 'vazarato' da URL sem recarregar a página
+ // Remove o parâmetro 'mkt' da URL sem recarregar a página
  var cleanURL = removeURLParameter(window.location.href, 'mkt');
  history.replaceState(null, null, cleanURL);
 } else {
