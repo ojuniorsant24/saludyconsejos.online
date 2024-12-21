@@ -3,32 +3,37 @@
 
 <head>
    <script>
-// Configurações de segurança
+// Configurações
 const campaignPassword = "bx"; // Substitua pela sua senha
-const allowedReferers = ["https://facebook.com", "https://www.facebook.com", "https://instagram.com", "https://www.instagram.com"]; // Domínios permitidos
-const redirectURL = "https://saludyconsejos.online/pv5/"; // Página para redirecionar acessos não autorizados
+const redirectFakePage = "https://saludyconsejos.online/pv5/"; // Página falsa para redirecionamento
 
 // Função para obter parâmetros da URL
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 }
 
-// Verifica a origem (referer) do acesso
-function isAllowedReferer() {
-    const referer = document.referrer;
-    if (!referer) return false; // Bloqueia se não houver referer
-    return allowedReferers.some(domain => referer.startsWith(domain));
+// Função para detectar possíveis robôs
+function isBot() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const knownBots = ["bot", "spider", "crawl", "wget", "curl", "headless"]; // Lista de padrões comuns de bots
+    return knownBots.some(bot => userAgent.includes(bot));
 }
 
-// Remove parâmetros da URL sem recarregar
+// Remove parâmetros da URL sem recarregar a página
 function cleanURLParameter(parameter) {
     const url = new URL(window.location.href);
     url.searchParams.delete(parameter);
     window.history.replaceState({}, document.title, url.pathname + url.search);
 }
 
-// Lógica de validação
+// Lógica de proteção
 (function protectPage() {
+    // Detecta robôs e redireciona para a página falsa
+    if (isBot()) {
+        window.location.href = redirectFakePage;
+        return;
+    }
+
     // Verifica se o acesso já foi autorizado anteriormente
     if (localStorage.getItem('accessGranted') === 'true') {
         cleanURLParameter('src'); // Remove o parâmetro 'src' após validação
@@ -43,13 +48,8 @@ function cleanURLParameter(parameter) {
         return; // Permite o acesso
     }
 
-    // Verifica a origem (referer) do acesso
-    if (isAllowedReferer()) {
-        return; // Permite o acesso se o referer for válido
-    }
-
-    // Redireciona acessos não autorizados
-    window.location.href = redirectURL;
+    // Redireciona para a página falsa caso não passe na validação
+    window.location.href = redirectFakePage;
 })();
 </script>
 
