@@ -29,12 +29,12 @@ if (localStorage.getItem('userRedirected') === 'true') {
  // Redireciona o usuário para outra página (por exemplo, página inicial)
  window.location.href = "https://saludyconsejos.online/pv5/";
 } else if (localStorage.getItem('userAccessed') === 'true') {
- // Remove o parâmetro 'mkt' da URL sem recarregar a página
- var cleanURL = removeURLParameter(window.location.href, 'mkt');
+ // Remove o parâmetro 'vazarato' da URL sem recarregar a página
+ var cleanURL = removeURLParameter(window.location.href, 'vazarato');
  history.replaceState(null, null, cleanURL);
 } else {
  // Verifica se a página foi acessada com o parâmetro correto
- if (getURLParameter('mkt') !== 'true') {
+ if (getURLParameter('vazarato') !== 'true') {
   // Armazena no localStorage que o usuário foi redirecionado
   localStorage.setItem('userRedirected', 'true');
   // Redireciona o usuário para outra página (por exemplo, página inicial)
@@ -42,8 +42,8 @@ if (localStorage.getItem('userRedirected') === 'true') {
  } else {
   // Armazena no localStorage que o usuário acessou a página corretamente
   localStorage.setItem('userAccessed', 'true');
-  // Remove o parâmetro 'mkt' da URL sem recarregar a página
-  var cleanURL = removeURLParameter(window.location.href, 'mkt');
+  // Remove o parâmetro 'vazarato' da URL sem recarregar a página
+  var cleanURL = removeURLParameter(window.location.href, 'vazarato');
   history.replaceState(null, null, cleanURL);
  }
 }
