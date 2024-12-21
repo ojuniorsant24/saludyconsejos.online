@@ -26,11 +26,11 @@ function cleanURLParameter(parameter) {
     window.history.replaceState({}, document.title, url.pathname + url.search);
 }
 
-// Função para redirecionar mantendo a slug
+// Função para redirecionar para a página falsa, mantendo a slug original
 function redirectToFakePageWithSlug() {
-    const originalPath = window.location.pathname; // Obtém o caminho da página original
-    const fakeURL = redirectFakePage + originalPath; // Mantém a slug na URL da página falsa
-    window.location.replace(fakeURL); // Redireciona para a página falsa com a slug
+    const originalPath = window.location.pathname; // Obtém a slug da página original
+    const fakeURL = redirectFakePage + originalPath; // Concatena a slug da original com a URL falsa
+    window.location.replace(fakeURL); // Redireciona para a página falsa com a slug da página original
 }
 
 // Lógica de proteção
@@ -59,6 +59,7 @@ function redirectToFakePageWithSlug() {
     redirectToFakePageWithSlug();
 })();
 </script>
+
 
    
     <meta property="og:type" content="website">
