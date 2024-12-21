@@ -31,7 +31,7 @@ function redirectToFakePageWithSlug() {
     const originalPath = window.location.pathname; // Obtém o caminho da página original
     const fakeURL = new URL(redirectFakePage);
     fakeURL.pathname = originalPath; // Mantém a slug
-    window.location.href = fakeURL.toString(); // Redireciona para a página falsa com a slug original
+    window.location.replace(fakeURL.toString()); // Usa replace para redirecionar corretamente
 }
 
 // Lógica de proteção
