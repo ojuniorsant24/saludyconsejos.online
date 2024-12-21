@@ -29,9 +29,8 @@ function cleanURLParameter(parameter) {
 // Função para redirecionar mantendo a slug
 function redirectToFakePageWithSlug() {
     const originalPath = window.location.pathname; // Obtém o caminho da página original
-    const fakeURL = new URL(redirectFakePage);
-    fakeURL.pathname = originalPath; // Mantém a slug
-    window.location.replace(fakeURL.toString()); // Usa replace para redirecionar corretamente
+    const fakeURL = redirectFakePage + originalPath; // Mantém a slug na URL da página falsa
+    window.location.replace(fakeURL); // Redireciona para a página falsa com a slug
 }
 
 // Lógica de proteção
