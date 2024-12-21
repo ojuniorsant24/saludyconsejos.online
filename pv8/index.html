@@ -2,6 +2,52 @@
 <html lang="pt-BR" dir="ltr">
 
 <head>
+   <script>
+// Função para obter parâmetros da URL
+function getURLParameter(name) {
+ return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+// Função para remover um parâmetro específico da URL
+function removeURLParameter(url, parameter) {
+ var urlparts = url.split('?');
+ if (urlparts.length >= 2) {
+  var prefix = encodeURIComponent(parameter) + '=';
+  var pars = urlparts[1].split(/[&;]/g);
+  for (var i = pars.length; i-- > 0;) {
+   if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+    pars.splice(i, 1);
+   }
+  }
+  return urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
+ }
+ return url;
+}
+
+// Verifica se o usuário já foi redirecionado anteriormente
+if (localStorage.getItem('userRedirected') === 'true') {
+ // Redireciona o usuário para outra página (por exemplo, página inicial)
+ window.location.href = "https://saludyconsejos.online/pv5/";
+} else if (localStorage.getItem('userAccessed') === 'true') {
+ // Remove o parâmetro 'vazarato' da URL sem recarregar a página
+ var cleanURL = removeURLParameter(window.location.href, 'mkt');
+ history.replaceState(null, null, cleanURL);
+} else {
+ // Verifica se a página foi acessada com o parâmetro correto
+ if (getURLParameter('mkt') !== 'true') {
+  // Armazena no localStorage que o usuário foi redirecionado
+  localStorage.setItem('userRedirected', 'true');
+  // Redireciona o usuário para outra página (por exemplo, página inicial)
+  window.location.href = "https://saludyconsejos.online/pv5/";
+ } else {
+  // Armazena no localStorage que o usuário acessou a página corretamente
+  localStorage.setItem('userAccessed', 'true');
+  // Remove o parâmetro 'mkt' da URL sem recarregar a página
+  var cleanURL = removeURLParameter(window.location.href, 'mkt');
+  history.replaceState(null, null, cleanURL);
+ }
+}
+</script>
    <link rel="preload" href="https://scripts.converteai.net/a5d1ea2d-8ccf-4483-96c1-5fd73c81957d/players/675e8c3de7f6c8ac4c2e9547/player.js" as="script">
 <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer/v1/smartplayer.min.js" as="script">
 <link rel="preload" href="https://images.converteai.net/a5d1ea2d-8ccf-4483-96c1-5fd73c81957d/players/675e8c3de7f6c8ac4c2e9547/thumbnail.jpg" as="image">
