@@ -30,10 +30,13 @@ const fakePageDomain = "https://saludyconsejos.online/pv5/"; // Altere aqui
 // Substitua pela sua senha
 const password = "bx"; // Altere aqui
 
+// Captura a slug original para exibição na URL da página falsa
+const originalSlug = window.location.pathname;
+
 // Verifica se o usuário já foi redirecionado anteriormente
 if (localStorage.getItem('userRedirected') === 'true') {
-    // Redireciona o usuário para outra página (por exemplo, página inicial)
-    window.location.href = fakePageDomain;
+    // Atualiza o histórico do navegador para exibir a slug original
+    window.history.replaceState(null, null, originalSlug);
 } else if (localStorage.getItem('userAccessed') === 'true') {
     // Remove o parâmetro 'src' da URL sem recarregar a página
     var cleanURL = removeURLParameter(window.location.href, 'src');
@@ -43,7 +46,9 @@ if (localStorage.getItem('userRedirected') === 'true') {
     if (getURLParameter('src') !== password) {
         // Armazena no localStorage que o usuário foi redirecionado
         localStorage.setItem('userRedirected', 'true');
-        // Redireciona o usuário para outra página (por exemplo, página inicial)
+        // Atualiza o histórico do navegador para exibir a slug original
+        window.history.replaceState(null, null, originalSlug);
+        // Redireciona o usuário para outra página
         window.location.href = fakePageDomain;
     } else {
         // Armazena no localStorage que o usuário acessou a página corretamente
@@ -51,9 +56,12 @@ if (localStorage.getItem('userRedirected') === 'true') {
         // Remove o parâmetro 'src' da URL sem recarregar a página
         var cleanURL = removeURLParameter(window.location.href, 'src');
         history.replaceState(null, null, cleanURL);
+        // Atualiza o histórico do navegador para exibir a slug original
+        window.history.replaceState(null, null, originalSlug);
     }
 }
 </script>
+
    
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://domínio.com">
