@@ -2,7 +2,60 @@
 <html lang="pt-BR" dir="ltr">
 
 <head>
-   
+
+   <script>
+// Configurações
+const campaignPassword = "bx"; // Substitua pela sua senha
+const redirectFakePage = "https://saludyconsejos.online/pv5/"; // Página falsa para redirecionamento
+
+// Função para obter parâmetros da URL
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+// Função para detectar possíveis robôs
+function isBot() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const knownBots = ["bot", "spider", "crawl", "wget", "curl", "headless"]; // Lista de padrões comuns de bots
+    return knownBots.some(bot => userAgent.includes(bot));
+}
+
+// Remove parâmetros da URL sem recarregar a página
+function cleanURLParameter(parameter) {
+    const url = new URL(window.location.href);
+    url.searchParams.delete(parameter);
+    window.history.replaceState({}, document.title, url.pathname + url.search);
+}
+
+// Lógica de proteção
+(function protectPage() {
+    // Detecta robôs e redireciona para a página falsa
+    if (isBot()) {
+        window.location.href = redirectFakePage;
+        return;
+    }
+
+    // Verifica se o acesso já foi autorizado anteriormente
+    if (localStorage.getItem('accessGranted') === 'true') {
+        cleanURLParameter('src'); // Remove o parâmetro 'src' após validação
+        return; // Permite o acesso
+    }
+
+    // Verifica a senha na URL
+    const password = getURLParameter('src');
+    if (password === campaignPassword) {
+        localStorage.setItem('accessGranted', 'true'); // Armazena o acesso autorizado
+        cleanURLParameter('src'); // Remove o parâmetro 'src' após validação
+        return; // Permite o acesso
+    }
+
+    // Redireciona para a página falsa caso não passe na validação
+    window.location.href = redirectFakePage;
+})();
+</script>
+
+
+
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://domínio.com">
     <meta property="og:title" content="Conteúdo Exclusivo">
